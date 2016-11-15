@@ -1,3 +1,5 @@
+*.pyc
+
 # Logs
 logs
 *.log

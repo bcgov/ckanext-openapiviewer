@@ -1,0 +1,19 @@
+{% ckan_extends %}
+
+{% block package_basic_fields_custom %}
+
+  {% set package_id = data.id or None %}
+
+  {% set openApiSpecUrl = None %}
+  {% if package_id %}
+
+    {# At the present time, only allow users to specify one openapi spec url. #}
+    {% set openApiSpecUrl = h.get_openapi_specs_for_package(package_id)[0] or None %}
+
+  {% endif %}
+
+  <div class="form-horizontal">
+    {{ form.input('openapi_spec_url', label=_('OpenAPI Specification URL'), id='field-openapi-spec-url', placeholder=_('Specify a URL to an OpenAPI Specification'), value=openApiSpecUrl.openapi_spec_url, error=errors.openapi_spec_url, classes=['control-full']) }}
+  </div>
+
+{% endblock %}
