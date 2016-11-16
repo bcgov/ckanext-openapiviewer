@@ -12,6 +12,7 @@ Installation:
 3. from within the ckanext-openapiconsole folder, run the following:
 
 python setup.py develop
-paster initdb -c <your ini file>
+
+paster initdb -c [your ini file]
 
 4. startup ckan

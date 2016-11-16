@@ -28,11 +28,13 @@
 
 {% endblock -%}
 
-{% block primary_content_inner %}
-  {{ super() }}
+{# {% block primary_content_inner %} #}
+{% block package_resources %}
 
   {% block api_view %}
     {% snippet "package/snippets/openapi_console.html", pkg=pkg %}
   {% endblock %}
+
+  {{ super() }}
 
 {% endblock %}

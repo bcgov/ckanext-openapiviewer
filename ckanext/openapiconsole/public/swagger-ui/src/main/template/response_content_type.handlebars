@@ -2,7 +2,7 @@
 <select name="responseContentType" id="{{responseContentTypeId}}">
 {{#if produces}}
   {{#each produces}}
-  <option value="{{{sanitize this}}}">{{{sanitize this}}}</option>
+  <option value="{{this}}">{{{this}}}</option>
   {{/each}}
 {{else}}
   <option value="application/json">application/json</option>
