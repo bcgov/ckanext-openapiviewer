@@ -4,11 +4,11 @@ SwaggerUi.Views.SignatureView = Backbone.View.extend({
   events: {
     'click a.description-link'       : 'switchToDescription',
     'click a.snippet-link'           : 'switchToSnippet',
-    'mousedown .snippet_json'          : 'jsonSnippetMouseDown',
-    'mousedown .snippet_xml'          : 'xmlSnippetMouseDown'
+    'mousedown .snippet'          : 'snippetToTextArea'
   },
 
   initialize: function () {
+
   },
 
   render: function(){
@@ -19,6 +19,12 @@ SwaggerUi.Views.SignatureView = Backbone.View.extend({
       this.switchToDescription();
     } else {
       this.switchToSnippet();
+    }
+    
+    this.isParam = this.model.isParam;
+
+    if (this.isParam) {
+      $('.notice', $(this.el)).text('Click to set as parameter value');
     }
 
     return this;
@@ -38,39 +44,27 @@ SwaggerUi.Views.SignatureView = Backbone.View.extend({
   switchToSnippet: function(e){
     if (e) { e.preventDefault(); }
 
-    $('.snippet', $(this.el)).show();
     $('.description', $(this.el)).hide();
+    $('.snippet', $(this.el)).show();
     $('.snippet-link', $(this.el)).addClass('selected');
     $('.description-link', $(this.el)).removeClass('selected');
   },
 
   // handler for snippet to text area
-  snippetToTextArea: function(val) {
-    var textArea = $('textarea', $(this.el.parentNode.parentNode.parentNode));
+  snippetToTextArea: function(e) {
+    if (this.isParam) {
+      if (e) { e.preventDefault(); }
 
-    // Fix for bug in IE 10/11 which causes placeholder text to be copied to "value"
-    if ($.trim(textArea.val()) === '' || textArea.prop('placeholder') === textArea.val()) {
-      textArea.val(val);
-      // TODO move this code outside of the view and expose an event instead
-      if( this.model.jsonEditor && this.model.jsonEditor.isEnabled()){
-        this.model.jsonEditor.setValue(JSON.parse(this.model.sampleJSON));
+      var textArea = $('textarea', $(this.el.parentNode.parentNode.parentNode));
+
+      // Fix for bug in IE 10/11 which causes placeholder text to be copied to "value"
+      if ($.trim(textArea.val()) === '' || textArea.prop('placeholder') === textArea.val()) {
+        textArea.val(this.model.sampleJSON);
+        // TODO move this code outside of the view and expose an event instead
+        if( this.model.jsonEditor && this.model.jsonEditor.isEnabled()){
+          this.model.jsonEditor.setValue(JSON.parse(this.model.sampleJSON));
+        }
       }
-    }
-  },
-
-  jsonSnippetMouseDown: function (e) {
-    if (this.model.isParam) {
-      if (e) { e.preventDefault(); }
-
-      this.snippetToTextArea(this.model.sampleJSON);
-    }
-  },
-
-  xmlSnippetMouseDown: function (e) {
-    if (this.model.isParam) {
-      if (e) { e.preventDefault(); }
-
-      this.snippetToTextArea(this.model.sampleXML);
     }
   }
 });
