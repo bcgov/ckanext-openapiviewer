@@ -9,6 +9,6 @@ Installation:
 
 2. Add 'openapi_view' to the list of plugins in your .ini file
 
-3. paster views create openapi_view -c /apps/ckan/conf/development.ini
+3. paster views create openapi_view -c <ini file>
 
 4. startup ckan
