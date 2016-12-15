@@ -4,9 +4,9 @@ import sys, os
 version = '0.1'
 
 setup(
-    name='ckanext-openconsole',
+    name='ckanext-openapi',
     version=version,
-    description="adds openapi (fka swagger) visualization",
+    description="adds an interactive openapi (aka swagger) view to resources of the openapi mimetype",
     long_description='''
     ''',
     classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -16,7 +16,7 @@ setup(
     url='',
     license='',
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
-    namespace_packages=['ckanext', 'ckanext.openapiconsole'],
+    namespace_packages=['ckanext', 'ckanext.openapi'],
     include_package_data=True,
     zip_safe=False,
     install_requires=[
@@ -24,9 +24,6 @@ setup(
     ],
     entry_points='''
         [ckan.plugins]
-        openapi_console=ckanext.openapiconsole.plugin:OpenApiConsolePlugin
-
-        [paste.paster_command]        
-        initdb = ckanext.openapiconsole.commands:InitDB
+        openapi_view=ckanext.openapi.plugin:OpenApiViewPlugin
     ''',
 )
