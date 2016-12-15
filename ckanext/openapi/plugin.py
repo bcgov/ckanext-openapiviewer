@@ -9,7 +9,6 @@ class OpenApiViewPlugin(p.SingletonPlugin):
 
   #interfaces
   p.implements(p.IResourceView, inherit=True)
-  #p.implements(p.ITemplateHelpers, inherit=True)
   p.implements(p.IConfigurer, inherit=True)
   p.implements(p.IConfigurable, inherit=True)
   p.implements(p.IPackageController, inherit=True)
@@ -52,8 +51,3 @@ class OpenApiViewPlugin(p.SingletonPlugin):
 
   def view_template(self, context, data_dict):
     return 'dataviewer/openapi_view.html'
-
-  # ITemplateHelpers
-
-  def get_helpers(self):
-    return {"get_openapi_spec_url": get_openapi_spec_url}
