@@ -15,6 +15,6 @@ Installation:
 
 4. Add the new resource view to the CKAN database:
 
-  Paster views create openapi_view -c INI_FILE
+  paster views create openapi_view -c INI_FILE
 
 5. Startup ckan
