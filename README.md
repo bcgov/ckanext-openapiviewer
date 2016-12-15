@@ -7,8 +7,14 @@ Installation:
 
 1. Copy ckanext-openapi into the ckan src folder
 
-2. Add 'openapi_view' to the list of plugins in your .ini file
+2. Within src/ckanext-openapi run: 
 
-3. paster views create openapi_view -c INI_FILE
+    python setup.py develop
 
-4. startup ckan
+3. Add 'openapi_view' to the list of plugins in your .ini file
+
+4. Add the new resource view to the CKAN database:
+
+  Paster views create openapi_view -c INI_FILE
+
+5. Startup ckan
