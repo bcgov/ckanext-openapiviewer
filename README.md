@@ -1,18 +1,20 @@
-# ckanext-openapiconsole
+# ckanext-openapi
 
-CKAN Extension which adds an interactive OpenAPI (AKA Swagger) console
-to packages.
+CKAN Extension which creates an OpenAPI (aka Swagger) view that is accessible for previewing
+resources of the OpenAPI mimetype.
 
 Installation:
 
-1. Copy ckanext-openapiconsole into the ckan src folder
+1. Copy ckanext-openapi into the ckan src folder
 
-2. Add 'openapi_console' to the list of plugins in your .ini file
+2. Within src/ckanext-openapi run: 
 
-3. from within the ckanext-openapiconsole folder, run the following:
+    python setup.py develop
 
-python setup.py develop
+3. Add 'openapi_view' to the list of plugins in your .ini file
 
-paster initdb -c [your ini file]
+4. Add the new resource view to the CKAN database:
 
-4. startup ckan
+  paster views create openapi_view -c INI_FILE
+
+5. Startup ckan
