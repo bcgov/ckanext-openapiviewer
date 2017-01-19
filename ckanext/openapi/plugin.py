@@ -12,10 +12,11 @@ class OpenApiViewPlugin(p.SingletonPlugin):
   p.implements(p.IResourceView, inherit=True)
   p.implements(p.IConfigurer, inherit=True)
   p.implements(p.IConfigurable, inherit=True)
-  p.implements(p.IPackageController, inherit=True)
+  p.implements(p.IResourceController, inherit=True)
  
   #constants
   supported_formats = ['openapi-json']
+  view_type = 'openapi_view';
 
   # IConfigurer
 
@@ -35,7 +36,7 @@ class OpenApiViewPlugin(p.SingletonPlugin):
   # IResourceView (CKAN >=2.3)
 
   def info(self):
-    return {'name': 'openapi_view',
+    return {'name': self.view_type,
             'title': 'OpenAPI Console',
             'icon': 'file',
             'iframed': True,
@@ -53,24 +54,40 @@ class OpenApiViewPlugin(p.SingletonPlugin):
   def view_template(self, context, data_dict):
     return 'dataviewer/openapi_view.html'
 
-  def add_default_views(self, context, data_dict):
-    if "resources" not in data_dict:
-      return
+  # IResourceController
 
-    resources = data_dict["resources"]
-    for resource in resources:
-      if self.can_view({'package': data_dict, 'resource': resource}):
-        #add the openapi resource view for this resource
-        view = {'title': 'OpenAPI Console',
-                'description': '',
-                'resource_id': resource['id'],
-                'view_type': 'openapi_view'}
-        p.toolkit.get_action('resource_view_create')(
-            {'defer_commit': True}, view
+  def after_update(self, context, resource):
+    self.add_default_views(context, resource)
+
+  def after_create(self, context, resource):
+    self.add_default_views(context, resource)
+
+  # Other functions
+
+  #returns true if the resource already has a view of type 'openapi_view', 
+  #and false otherwise
+  def has_view_already(self, context, resource):
+      if 'id' in resource:
+        params = {'id': resource['id']}
+        resourceViews = p.toolkit.get_action('resource_view_list')(
+            context, params
         )
+        for resourceView in resourceViews:
+          if "view_type" in resourceView and resourceView["view_type"] == self.view_type:
+            return True
 
-  def after_update(self, context, data_dict):
-    self.add_default_views(context, data_dict)
+      return False
 
-  def after_create(self, context, data_dict):
-    self.add_default_views(context, data_dict)
+  def add_default_views(self, context, resource):
+   
+    if 'id' in resource and self.can_view({'resource': resource}) and not self.has_view_already(context, resource):
+
+      #add the openapi resource view for this resource
+      view = {'title': 'OpenAPI Console',
+              'description': '',
+              'resource_id': resource['id'],
+              'view_type': self.view_type}
+      p.toolkit.get_action('resource_view_create')(
+          context, view
+      )
+
