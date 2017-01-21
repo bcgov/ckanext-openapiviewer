@@ -11,7 +11,7 @@ var additionalQueryStringParams;
 function handleLogin() {
   var scopes = [];
 
-  var auths = window.swaggerUi.api.authSchemes || window.swaggerUi.api.securityDefinitions;
+  var auths = window.swaggerUiAuth.authSchemes || window.swaggerUiAuth.securityDefinitions;
   if(auths) {
     var key;
     var defs = auths;
@@ -36,8 +36,7 @@ function handleLogin() {
     }
   }
 
-  if(window.swaggerUi.api
-    && window.swaggerUi.api.info) {
+  if(window.swaggerUi.api && window.swaggerUi.api.info) {
     appName = window.swaggerUi.api.info.title;
   }
 
@@ -250,11 +249,19 @@ function clientCredentialsFlow(scopes, tokenUrl, OAuthSchemeKey) {
 
 window.processOAuthCode = function processOAuthCode(data) {
   var OAuthSchemeKey = data.state;
+
+  // redirect_uri is required in auth code flow 
+  // see https://tools.ietf.org/html/draft-ietf-oauth-v2-31#section-4.1.3
+  var host = window.location;
+  var pathname = location.pathname.substring(0, location.pathname.lastIndexOf("/"));
+  var defaultRedirectUrl = host.protocol + '//' + host.host + pathname + '/o2c.html';
+  var redirectUrl = window.oAuthRedirectUrl || defaultRedirectUrl;
+
   var params = {
     'client_id': clientId,
     'code': data.code,
     'grant_type': 'authorization_code',
-    'redirect_uri': redirect_uri
+    'redirect_uri': redirectUrl
   };
 
   if (clientSecret) {
@@ -263,7 +270,7 @@ window.processOAuthCode = function processOAuthCode(data) {
 
   $.ajax(
   {
-    url : window.swaggerUi.tokenUrl,
+    url : window.swaggerUiAuth.tokenUrl,
     type: "POST",
     data: params,
     success:function(data, textStatus, jqXHR)
@@ -277,7 +284,7 @@ window.processOAuthCode = function processOAuthCode(data) {
   });
 };
 
-window.onOAuthComplete = function onOAuthComplete(token,OAuthSchemeKey) {
+window.onOAuthComplete = function onOAuthComplete(token, OAuthSchemeKey) {
   if(token) {
     if(token.error) {
       var checkbox = $('input[type=checkbox],.secured')
@@ -287,7 +294,7 @@ window.onOAuthComplete = function onOAuthComplete(token,OAuthSchemeKey) {
       alert(token.error);
     }
     else {
-      var b = token[window.swaggerUi.tokenName];      
+      var b = token[window.swaggerUiAuth.tokenName];      
       if (!OAuthSchemeKey){
           OAuthSchemeKey = token.state;
       }
@@ -331,7 +338,10 @@ window.onOAuthComplete = function onOAuthComplete(token,OAuthSchemeKey) {
             }
           }
         });
-        window.swaggerUi.api.clientAuthorizations.add(OAuthSchemeKey, new SwaggerClient.ApiKeyAuthorization('Authorization', 'Bearer ' + b, 'header'));
+        if(typeof window.swaggerUi !== 'undefined') {
+          window.swaggerUi.api.clientAuthorizations.add(window.swaggerUiAuth.OAuthSchemeKey, new SwaggerClient.ApiKeyAuthorization('Authorization', 'Bearer ' + b, 'header'));
+          window.swaggerUi.load();
+        }
       }
     }
   }

@@ -30,7 +30,9 @@
     "SwaggerClient": false,
     "hljs": false,
     "SwaggerUi": false,
+    "jsyaml": false,
     "define": false,
+    "sanitizeHtml": false,
 
     // Global object
     // TODO: remove these
