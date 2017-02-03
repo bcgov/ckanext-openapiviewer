@@ -95,11 +95,11 @@
 
                   showError(msg);
                 },
-                docExpansion: "none",
-                //jsonEditor: false,
-                apisSorter: "alpha"//,
-                //defaultModelRendering: 'schema',
-                //showRequestHeaders: false
+                docExpansion: "list",
+                jsonEditor: false,
+                apisSorter: "alpha",
+                defaultModelRendering: 'schema',
+                showRequestHeaders: true
             });
 
             function addApiKeyAuthorization() {
@@ -229,8 +229,8 @@
 
 </head>
 
-<body class="page-docs" style="zoom: 1; height: 800px" >
-<header class="site-header">
+<body class="page-docs" style="height: 800px !important;" >
+<!--header class="site-header">
     <nav role="navigation" class="navbar navbar-default">
         <div class="container">
             <div class="navbar-header">
@@ -248,7 +248,7 @@
             </div>
         </div>
     </nav>
-</header>
+</header-->
 
 <section class="content">
     <div id="api2-explorer">
