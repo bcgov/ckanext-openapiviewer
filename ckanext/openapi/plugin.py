@@ -1,3 +1,5 @@
+import mimetypes
+
 import ckan.plugins as p
 
 log = __import__('logging').getLogger(__name__)
@@ -17,6 +19,10 @@ class OpenApiViewPlugin(p.SingletonPlugin):
   # IConfigurer
 
   def update_config(self, config):   
+    mimetypes.add_type('application/openapi+json', '.open-api')
+    mimetypes.add_type('application/openapi+json', '.openapi')
+    mimetypes.add_type('application/openapi+json', '.openapi-json')
+
     p.toolkit.add_public_directory(config, 'public')
     p.toolkit.add_template_directory(config, 'templates')
 
