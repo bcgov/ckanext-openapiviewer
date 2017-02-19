@@ -1,8 +1,4 @@
-
 import ckan.plugins as p
-import ckan.plugins.toolkit as tk
-import ckan.lib.datapreview as datapreview
-from ckan.common import request
 
 log = __import__('logging').getLogger(__name__)
 
@@ -21,8 +17,6 @@ class OpenApiViewPlugin(p.SingletonPlugin):
   # IConfigurer
 
   def update_config(self, config):   
-    #mimetypes.add_type('application/openapi+json', '.json')
-    
     p.toolkit.add_public_directory(config, 'public')
     p.toolkit.add_template_directory(config, 'templates')
 
