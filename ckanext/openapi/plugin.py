@@ -1,9 +1,6 @@
 import mimetypes
 
 import ckan.plugins as p
-import ckan.plugins.toolkit as tk
-import ckan.lib.datapreview as datapreview
-from ckan.common import request
 
 log = __import__('logging').getLogger(__name__)
 
