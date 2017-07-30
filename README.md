@@ -61,6 +61,9 @@ for previewing OpenAPI JSON resources.
   list the 'openapi_view' plugin *before* the various 'edc' plugins in the 
   .ini file.
 
+  If this extension is installed alongside pdf_view, be sure to 
+  list the 'openapi_view' plugin *before* pdf_view.
+
 2.4. Add the new resource view to the CKAN database:
 
   paster views create openapi_view -c INI_FILE
