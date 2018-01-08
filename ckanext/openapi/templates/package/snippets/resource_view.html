@@ -1,4 +1,7 @@
 {% import 'macros/form.html' as form %}
+{# 
+  This h.can_view_resource helper function is defined in ckanext-bcgov/ckanext/bcgov/util/util. Thus ckanext-bcgov is required for this extension to function dependencie
+#}
 {% if h.can_view_resource(resource) %}
   <div id="view-{{ resource_view['id'] }}" class="resource-view" data-id="{{ resource_view['id'] }}" data-title="{{ resource_view['title'] }}" data-description="{{ resource_view['descripion'] }}">
     
